@@ -1,0 +1,23 @@
+{
+  "name": "network-asset-manager",
+  "version": "1.0.0",
+  "description": "Sistema corporativo de gerenciamento de ativos de rede e infraestrutura de TI",
+  "main": "public/index.html",
+  "scripts": {
+    "start": "http-server public -p 3000 -o",
+    "dev": "http-server public -p 3000 -o"
+  },
+  "keywords": [
+    "network",
+    "asset-manager",
+    "itam",
+    "noc",
+    "infrastructure",
+    "firebase-hosting"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

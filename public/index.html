@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network Asset Manager — Gerenciamento de Ativos e Infraestrutura de Rede</title>
+  <meta name="description" content="Sistema corporativo de gerenciamento de ativos de rede, monitoramento de manutenções preventivas, preditivas e corretivas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="app-layout">
+    
+    <!-- Sidebar Corporativa -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-badge">NOC / ITAM</div>
+        <div class="brand-titles">
+          <h1>Network Manager</h1>
+          <p>Gestão de Infraestrutura</p>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <span class="nav-section-label">Módulos do Sistema</span>
+        <button class="sidebar-nav-item active" id="nav-item-dashboard" type="button">
+          📊 Painel Geral (NOC)
+        </button>
+        <button class="sidebar-nav-item" id="nav-item-assets" type="button">
+          🖥️ Catálogo de Ativos
+        </button>
+        <button class="sidebar-nav-item" id="nav-item-maint" type="button">
+          🛠️ Registro de Ocorrências
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="btn-reset-data" class="btn btn-secondary btn-sm" style="width: 100%;" title="Resetar para dados de demonstração">
+          ↺ Resetar Dados Demo
+        </button>
+      </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      
+      <!-- Topbar / Header -->
+      <header class="topbar">
+        <div class="page-title">
+          <h2>Console de Gerenciamento de Ativos de Rede</h2>
+          <p>Visão consolidada de inventário, disponibilidade e custos operacionais</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="btn-add-asset" class="btn btn-primary" type="button">
+            + Novo Ativo
+          </button>
+          <button id="btn-add-maint" class="btn btn-cyan" type="button">
+            + Registrar Manutenção
+          </button>
+        </div>
+      </header>
+
+      <!-- Banner Alerta de Maior Gasto -->
+      <div id="major-expense-banner" class="major-expense-banner">
+        <div class="major-expense-info">
+          <div class="expense-badge-icon">ANÁLISE</div>
+          <div class="major-expense-text">
+            <h3>Identificação Automática do Maior Gasto</h3>
+            <p id="major-expense-desc">Carregando dados de custos de manutenção...</p>
+          </div>
+        </div>
+        <div class="major-expense-val" id="major-expense-value">R$ 0,00</div>
+      </div>
+
+      <!-- Cards de Indicadores KPIs -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Total de Ativos</span>
+            <span class="kpi-icon">TOTAL</span>
+          </div>
+          <div class="kpi-value" id="kpi-total-assets">0</div>
+          <div class="kpi-subtext">Inventário cadastrado</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Ativos Operacionais</span>
+            <span class="kpi-icon">OK</span>
+          </div>
+          <div class="kpi-value" style="color: var(--status-active);" id="kpi-active-assets">0</div>
+          <div class="kpi-subtext">Status Operacional</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Em Manutenção</span>
+            <span class="kpi-icon">WARN</span>
+          </div>
+          <div class="kpi-value" style="color: var(--status-maint);" id="kpi-maint-assets">0</div>
+          <div class="kpi-subtext">Status Manutenção</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Ativos Inativos</span>
+            <span class="kpi-icon">CRIT</span>
+          </div>
+          <div class="kpi-value" style="color: var(--status-inactive);" id="kpi-inactive-assets">0</div>
+          <div class="kpi-subtext">Status Inativo</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Ocorrências</span>
+            <span class="kpi-icon">LOG</span>
+          </div>
+          <div class="kpi-value" id="kpi-total-occurrences">0</div>
+          <div class="kpi-subtext">Manutenções registradas</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Manut. Preventiva</span>
+            <span class="kpi-icon">PREV</span>
+          </div>
+          <div class="kpi-value" id="kpi-cost-preventive">R$ 0,00</div>
+          <div class="kpi-subtext">Investimento preventivo</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Manut. Preditiva</span>
+            <span class="kpi-icon">PRED</span>
+          </div>
+          <div class="kpi-value" id="kpi-cost-predictive">R$ 0,00</div>
+          <div class="kpi-subtext">Investimento analítico</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Manut. Corretiva</span>
+            <span class="kpi-icon">CORR</span>
+          </div>
+          <div class="kpi-value" id="kpi-cost-corrective">R$ 0,00</div>
+          <div class="kpi-subtext">Gasto em reparações</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Custo Total</span>
+            <span class="kpi-icon">CUSTO</span>
+          </div>
+          <div class="kpi-value" style="color: var(--blue-selection);" id="kpi-total-cost">R$ 0,00</div>
+          <div class="kpi-subtext">Acumulado global</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-title">Indisponibilidade</span>
+            <span class="kpi-icon">TEMPO</span>
+          </div>
+          <div class="kpi-value" id="kpi-total-downtime">0h</div>
+          <div class="kpi-subtext">Horas fora de operação</div>
+        </div>
+      </section>
+
+      <!-- Seção de Gráficos do Dashboard -->
+      <section class="charts-grid">
+        <div class="chart-card">
+          <h2 class="chart-title">Distribuição de Ativos por Tipo</h2>
+          <div id="chart-assets-by-type" class="chart-container"></div>
+        </div>
+
+        <div class="chart-card">
+          <h2 class="chart-title">Equipamentos por Status</h2>
+          <div id="chart-assets-by-status" class="chart-container"></div>
+        </div>
+
+        <div class="chart-card">
+          <h2 class="chart-title">Gastos por Tipo de Manutenção (R$)</h2>
+          <div id="chart-costs-by-type" class="chart-container"></div>
+        </div>
+
+        <div class="chart-card">
+          <h2 class="chart-title">Ocorrências por Equipamento</h2>
+          <div id="chart-occurrences-by-asset" class="chart-container"></div>
+        </div>
+      </section>
+
+      <!-- Barra de Filtros e Busca -->
+      <section class="controls-section">
+        <div class="filters-grid">
+          <div class="form-group">
+            <label for="search-input">Busca Rápida</label>
+            <input type="text" id="search-input" class="form-control" placeholder="Buscar por Nome, IP, MAC ou N/S...">
+          </div>
+
+          <div class="form-group">
+            <label for="filter-type">Tipo de Equipamento</label>
+            <select id="filter-type" class="form-control">
+              <option value="">Todos os Tipos</option>
+              <option value="Switch">Switch</option>
+              <option value="Roteador">Roteador</option>
+              <option value="Firewall">Firewall</option>
+              <option value="Servidor">Servidor</option>
+              <option value="Access Point">Access Point</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-vendor">Fabricante</label>
+            <select id="filter-vendor" class="form-control">
+              <option value="">Todos os Fabricantes</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-status">Status do Ativo</label>
+            <select id="filter-status" class="form-control">
+              <option value="">Todos os Status</option>
+              <option value="ativo">Ativo</option>
+              <option value="manutencao">Em Manutenção</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-maint-status">Revisão Preventiva</label>
+            <select id="filter-maint-status" class="form-control">
+              <option value="">Todas as Revisões</option>
+              <option value="ok">Em dia</option>
+              <option value="warning">Próxima (≤ 15 dias)</option>
+              <option value="overdue">Atrasada</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="align-self: flex-end;">
+            <button id="btn-clear-filters" class="btn btn-secondary" style="width: 100%;" type="button">Limpar Filtros</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tabela Principal com Abas -->
+      <section class="table-section">
+        <div class="section-header">
+          <div class="view-tabs">
+            <button id="tab-assets" class="tab-btn active" type="button">Catálogo de Ativos (<span id="asset-count-badge">0</span>)</button>
+            <button id="tab-maintenances" class="tab-btn" type="button">Histórico de Manutenções (<span id="maint-count-badge">0</span>)</button>
+          </div>
+        </div>
+
+        <!-- Visão 1: Tabela de Ativos -->
+        <div id="view-assets-container" class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Hostname / Nome</th>
+                <th>Tipo</th>
+                <th>Fabricante / Modelo</th>
+                <th>Endereço IP</th>
+                <th>Endereço MAC</th>
+                <th>Localização</th>
+                <th>Status</th>
+                <th>Próxima Preventiva</th>
+                <th style="text-align: right;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="assets-table-body">
+              <!-- Linhas geradas via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Visão 2: Tabela de Manutenções -->
+        <div id="view-maintenances-container" class="table-responsive" style="display: none;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Equipamento (Ativo)</th>
+                <th>Tipo Manutenção</th>
+                <th>Descrição</th>
+                <th>Custo (R$)</th>
+                <th>Indisponibilidade</th>
+                <th style="text-align: right;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="maintenances-table-body">
+              <!-- Linhas geradas via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Modal: Cadastro / Edição de Ativo -->
+  <div id="modal-asset" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modal-asset-title">Cadastrar Novo Ativo de Rede</h2>
+        <button id="btn-close-asset-modal" class="btn-close" type="button">&times;</button>
+      </div>
+      <form id="form-asset" action="javascript:void(0);">
+        <input type="hidden" id="asset-id">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="asset-name">Nome / Hostname *</label>
+            <input type="text" id="asset-name" class="form-control" placeholder="Ex: SW-CORE-01" required>
+          </div>
+          <div class="form-group">
+            <label for="asset-type">Tipo de Equipamento *</label>
+            <select id="asset-type" class="form-control" required>
+              <option value="Switch">Switch</option>
+              <option value="Roteador">Roteador</option>
+              <option value="Firewall">Firewall</option>
+              <option value="Servidor">Servidor</option>
+              <option value="Access Point">Access Point</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="asset-vendor">Fabricante *</label>
+            <input type="text" id="asset-vendor" class="form-control" placeholder="Ex: Cisco, Mikrotik..." required>
+          </div>
+          <div class="form-group">
+            <label for="asset-model">Modelo</label>
+            <input type="text" id="asset-model" class="form-control" placeholder="Ex: Catalyst 9300">
+          </div>
+          <div class="form-group">
+            <label for="asset-sn">Número de Série (S/N)</label>
+            <input type="text" id="asset-sn" class="form-control" placeholder="Ex: SN-98231-X">
+          </div>
+          <div class="form-group">
+            <label for="asset-ip">Endereço IP *</label>
+            <input type="text" id="asset-ip" class="form-control" placeholder="Ex: 192.168.1.1" required>
+          </div>
+          <div class="form-group">
+            <label for="asset-mac">Endereço MAC</label>
+            <input type="text" id="asset-mac" class="form-control" placeholder="Ex: 00:1B:44:11:3A:B7">
+          </div>
+          <div class="form-group">
+            <label for="asset-vlan">VLAN(s)</label>
+            <input type="text" id="asset-vlan" class="form-control" placeholder="Ex: 10, 20, 99">
+          </div>
+          <div class="form-group">
+            <label for="asset-gateway">Gateway</label>
+            <input type="text" id="asset-gateway" class="form-control" placeholder="Ex: 192.168.1.254">
+          </div>
+          <div class="form-group">
+            <label for="asset-location">Localização / Rack</label>
+            <input type="text" id="asset-location" class="form-control" placeholder="Ex: Data Center - Rack A01">
+          </div>
+          <div class="form-group">
+            <label for="asset-status">Status *</label>
+            <select id="asset-status" class="form-control" required>
+              <option value="ativo">Ativo</option>
+              <option value="manutencao">Em Manutenção</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="asset-last-maint">Data Última Preventiva</label>
+            <input type="date" id="asset-last-maint" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="asset-review-period">Período de Revisão (Dias)</label>
+            <input type="number" id="asset-review-period" class="form-control" value="90" min="1">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="btn-cancel-asset" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Ativo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Registro de Manutenção -->
+  <div id="modal-maint" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Registrar Ocorrência de Manutenção</h2>
+        <button id="btn-close-maint-modal" class="btn-close" type="button">&times;</button>
+      </div>
+      <form id="form-maint" action="javascript:void(0);">
+        <div class="form-grid">
+          <div class="form-group" style="grid-column: span 2;">
+            <label for="maint-asset-id">Ativo de Rede *</label>
+            <select id="maint-asset-id" class="form-control" required>
+              <option value="">Selecione o equipamento...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="maint-type">Tipo de Manutenção *</label>
+            <select id="maint-type" class="form-control" required>
+              <option value="preventiva">Preventiva</option>
+              <option value="preditiva">Preditiva</option>
+              <option value="corretiva">Corretiva</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="maint-date">Data da Realização *</label>
+            <input type="date" id="maint-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="maint-cost">Custo R$ *</label>
+            <input type="number" step="0.01" id="maint-cost" class="form-control" placeholder="0.00" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="maint-downtime">Indisponibilidade (Horas)</label>
+            <input type="number" step="0.1" id="maint-downtime" class="form-control" placeholder="0.0" min="0" value="0">
+          </div>
+          <div class="form-group" style="grid-column: span 2;">
+            <label for="maint-desc">Descrição / Detalhes da Ocorrência *</label>
+            <textarea id="maint-desc" class="form-control" rows="3" placeholder="Descreva os serviços efetuados, peças trocadas ou observações..." required></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="btn-cancel-maint" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" class="btn btn-cyan">Salvar Manutenção</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts JS Client-Side -->
+  <script src="js/storage.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
