@@ -1,116 +1,56 @@
-# Network Asset Manager 🌐
+# 🌐 Network Asset Manager — Portal ITAM & Gestão de Redes
 
-O **Network Asset Manager** é um sistema completo e 100% client-side para gestão estratégica de ativos e infraestrutura de rede, controle de ocorrências e análise de custos de manutenções preventivas, preditivas e corretivas.
+<p align="left">
+  <img src="https://img.shields.io/badge/Deploy-Firebase_Hosting-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
+  <img src="https://img.shields.io/badge/Domain-ITAM_%26_Infraestrutura-00599C?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/JavaScript-Vanilla_ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/Graphics-Native_SVG-FF6C37?style=for-the-badge" />
+</p>
+
+🔗 **Acesse a aplicação rodando ao vivo:** [gerenciadornetworks.web.app](https://gerenciadornetworks.web.app/)
+
+---
+
+## 📌 Sobre o Projeto
+
+O **Network Asset Manager** é um sistema corporativo completo *client-side* desenvolvido para a **Gestão Estratégica de Ativos de TI (ITAM)** e controle operacioal de infraestrutura de rede. 
+
+A aplicação permite mapear equipamentos, monitorar ocorrências e analisar custos operacionais de manutenções (**Preventivas, Preditivas e Corretivas**), fornecendo relatórios em tempo real sem dependência de bibliotecas externas.
 
 ---
 
 ## 🚀 Funcionalidades Principais
 
-- **Cadastro e Gestão de Ativos de Rede**: Registro detalhado com Nome/Hostname, Tipo (Switch, Roteador, Firewall, Servidor, Access Point, Outro), Fabricante, Modelo, Número de Série, Endereço IP, Endereço MAC, VLAN, Gateway, Localização e Status.
-- **Dashboard com 10 Indicadores Chave (KPIs)**: Total de ativos, operacionais, em manutenção, inativos, ocorrências, custos por modalidade de manutenção (Preventiva, Preditiva, Corretiva), custo total acumulado e horas de indisponibilidade.
-- **Identificação Automática do Maior Gasto**: Banner de destaque que calcula dinamicamente qual modalidade de manutenção representa o maior gasto financeiro e sua porcentagem em relação ao investimento total.
-- **Gráficos SVG Dinâmicos e Nativos (Sem Libs Externas)**: Ativos por Tipo, Equipamentos por Status, Gastos por Tipo de Manutenção e Ocorrências por Equipamento.
-- **Alertas Automatizados de Próxima Manutenção Preventiva**: Sinalização visual por cores (Em dia, Próxima e Atrasada) calculada dinamicamente.
-- **Filtros e Pesquisa Instantânea**: Busca por Hostname, IP, MAC ou Número de Série e filtros combinados por Tipo, Fabricante, Status e Situação da Manutenção.
-- **Persistência em localStorage**: Armazenamento 100% local com dados demonstrativos iniciais.
+- **📦 Cadastro & Mapeamento de Ativos:** Registro detalhado de Hostname, Tipo (Switch, Roteador, Firewall, Servidor, AP), Fabricante, Modelo, Serial, IP, MAC, VLAN, Gateway e Localização.
+- **📊 Dashboard Analítico (10 KPIs Nativos):** Monitoramento de total de ativos, status operacional, custos agregados por modalidade de manutenção e cálculo automático de horas de indisponibilidade.
+- **💰 Análise Financeira Inteligente:** Banner dinâmico que identifica automaticamente a modalidade de manutenção de maior impacto financeiro no orçamento.
+- **📈 Gráficos Dinâmicos em SVG Próprio:** Renderização nativa de gráficos de ativos por tipo, status, custos e incidentes sem o uso de bibliotecas terceirizadas (alta performance).
+- **⏱️ Alertas Automatizados de Manutenção:** Sinalização visual (*Em dia*, *Próxima* e *Atrasada*) calculada dinamicamente com base em regras de tempo.
+- **🔍 Pesquisa Instantânea & Filtros Combinados:** Busca por Hostname, IP ou MAC e filtragem por fabricante, status e prioridade.
+- **💾 Persistência de Dados Local:** Armazenamento via `localStorage` com carregamento de dados demonstrativos (*mock inicial*).
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **HTML5 & CSS3 Vanilla**: Interface com layout responsivo em tema claro corporativo ITAM (com fonte **IBM Plex Sans** e **IBM Plex Mono**).
-- **JavaScript Pure (ES6+)**: Lógica da aplicação, cálculos analíticos, manipuladores de DOM e persistência no `localStorage`.
-- **SVG (Scalable Vector Graphics)**: Renderização de gráficos nativos para máxima performance e zero dependências externas.
-- **Node.js (http-server)**: Utilizado estritamente como servidor estático de desenvolvimento local em localhost.
+- **HTML5 & CSS3 Vanilla:** Design corporativo responsivo inspirado em padrões ITAM (utilizando as tipografias *IBM Plex Sans* e *IBM Plex Mono*).
+- **JavaScript Pure (ES6+):** Lógica analítica, calculadora de KPIs, manipulação de DOM e persistência local.
+- **Scalable Vector Graphics (SVG):** Construção nativa de componentes visuais e gráficos vetoriais.
+- **Firebase Hosting & Node.js (http-server):** Ambiente de desenvolvimento e publicação em nuvem.
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Estrutura da Aplicação
 
-```
+```text
 gerenciadornetwork/
-├── package.json              # Configuração de scripts e dependência de dev (http-server)
-├── README.md                 # Documentação e guia do sistema
-└── public/                   # Pasta raiz servida localmente e no Firebase Hosting
-    ├── index.html            # Interface corporativa com sidebar
+├── package.json              # Configurações do projeto e scripts de dev
+├── README.md                 # Documentação oficial
+└── public/                   # Build final publicado no Firebase
+    ├── index.html            # Estrutura e layout da dashboard
     ├── css/
-    │   └── styles.css        # Folha de estilos corporativa clara
+    │   └── styles.css        # Estilização corporativa
     └── js/
-        ├── storage.js        # Módulo de persistência localStorage e CRUD
-        ├── charts.js         # Gerador de gráficos dinâmicos em SVG
-        └── app.js            # Lógica principal, filtros, KPIs e eventos
-```
-
----
-
-## 💻 Como Rodar o Projeto Localmente no Terminal
-
-### Opção 1: Servidor Local Node.js (`npm run dev` / `npm start`)
-
-1. **Instalar as dependências de desenvolvimento**:
-   ```bash
-   npm install
-   ```
-2. **Iniciar o servidor de desenvolvimento estático**:
-   ```bash
-   npm run dev
-   ```
-   *(ou `npm start`)*
-
-3. **Acessar no navegador**:
-   Abra o endereço: **`http://localhost:3000`**
-
-4. **Encerrar o servidor**:
-   No terminal onde o servidor está rodando, pressione as teclas **`Ctrl + C`** (e confirme digitando `S` ou `Y` se solicitado).
-
-### Opção 2: Diretamente no Navegador
-1. Navegue até a pasta `public/`.
-2. Dê um duplo clique no arquivo `index.html` para abrir diretamente no navegador.
-
----
-
-## ☁️ Deploy no Firebase Hosting
-
-O projeto é 100% estático client-side. A pasta `public/` é o que será publicado no Firebase Hosting:
-
-1. **Instalar o Firebase CLI** (caso não possua instalado):
-   ```bash
-   npm install -g firebase-tools
-   ```
-2. **Realizar Login no Firebase**:
-   ```bash
-   firebase login
-   ```
-3. **Inicializar o Firebase no projeto**:
-   ```bash
-   firebase init hosting
-   ```
-   - Pasta pública: digite **`public`**
-   - Single Page App (SPA): responda **`N`**
-   - Sobrescrever `public/index.html`: responda **`N`**
-
-4. **Publicar a aplicação**:
-   ```bash
-   firebase deploy
-   ```
-
----
-
-## 🎨 Paleta de Cores (Tema Claro Corporativo ITAM)
-
-| Elemento | Finalidade | Hex Code |
-| :--- | :--- | :--- |
-| **Fundo Geral** | Background claro da aplicação | `#F4F8FC` |
-| **Sidebar** | Painel lateral de navegação | `#EAF2F9` |
-| **Cards / Superfícies** | Fundo dos cards e componentes | `#FFFFFF` |
-| **Bordas** | Linhas divisórias discretas | `#D6E2ED` |
-| **Azul Principal** | Botões primários e ações de relevância | `#3B82C4` |
-| **Azul Claro** | Efeitos de hover e bordas de destaque | `#60A5D8` |
-| **Azul de Seleção** | Item/linha atualmente selecionada | `#2563A8` |
-| **Azul Muito Claro** | Destaque de fundo suave | `#E6F2FB` |
-| **Texto Principal** | Alta legibilidade para títulos e dados | `#1E293B` |
-| **Texto Secundário** | Rótulos, descrições e legendas | `#64748B` |
-| **Status Ativo / Em dia** | Badge verde de operabilidade | `#16A34A` |
-| **Status Atenção / Próxima** | Badge amarelo/laranja de alerta | `#D97706` |
-| **Status Atrasada / Inativo** | Badge vermelho de emergência | `#DC2626` |
-
+        ├── storage.js        # Módulo CRUD e controle do localStorage
+        ├── charts.js         # Motor de geração de gráficos em SVG
+        └── app.js            # Lógica central, eventos e cálculo de KPIs
