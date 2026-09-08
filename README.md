@@ -1,10 +1,10 @@
 # 🌐 Network Asset Manager — Portal ITAM & Gestão de Redes
 
 <p align="left">
-  <img src="https://img.shields.io/badge/Deploy-Firebase_Hosting-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
-  <img src="https://img.shields.io/badge/Domain-ITAM_%26_Infraestrutura-00599C?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/JavaScript-Vanilla_ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
-  <img src="https://img.shields.io/badge/Graphics-Native_SVG-FF6C37?style=for-the-badge" />
+  <img src="[https://img.shields.io/badge/Deploy-Firebase_Hosting-FFCA28?style=for-the-badge&logo=firebase&logoColor=black](https://img.shields.io/badge/Deploy-Firebase_Hosting-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)" />
+  <img src="[https://img.shields.io/badge/Domain-ITAM_%26_Infraestrutura-00599C?style=for-the-badge](https://img.shields.io/badge/Domain-ITAM_%26_Infraestrutura-00599C?style=for-the-badge)" />
+  <img src="[https://img.shields.io/badge/JavaScript-Vanilla_ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black](https://img.shields.io/badge/JavaScript-Vanilla_ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)" />
+  <img src="[https://img.shields.io/badge/Graphics-Native_SVG-FF6C37?style=for-the-badge](https://img.shields.io/badge/Graphics-Native_SVG-FF6C37?style=for-the-badge)" />
 </p>
 
 🔗 **Acesse a aplicação rodando ao vivo:** [gerenciadornetworks.web.app](https://gerenciadornetworks.web.app/)
@@ -13,7 +13,7 @@
 
 ## 📌 Sobre o Projeto
 
-O **Network Asset Manager** é um sistema corporativo completo *client-side* desenvolvido para a **Gestão Estratégica de Ativos de TI (ITAM)** e controle operacioal de infraestrutura de rede. 
+O **Network Asset Manager** é um sistema corporativo completo *client-side* desenvolvido para a **Gestão Estratégica de Ativos de TI (ITAM)** e controle operacional de infraestrutura de rede. 
 
 A aplicação permite mapear equipamentos, monitorar ocorrências e analisar custos operacionais de manutenções (**Preventivas, Preditivas e Corretivas**), fornecendo relatórios em tempo real sem dependência de bibliotecas externas.
 
@@ -42,15 +42,55 @@ A aplicação permite mapear equipamentos, monitorar ocorrências e analisar cus
 
 ## 📁 Estrutura da Aplicação
 
-```text
-gerenciadornetwork/
-├── package.json              # Configurações do projeto e scripts de dev
-├── README.md                 # Documentação oficial
-└── public/                   # Build final publicado no Firebase
-    ├── index.html            # Estrutura e layout da dashboard
-    ├── css/
-    │   └── styles.css        # Estilização corporativa
-    └── js/
-        ├── storage.js        # Módulo CRUD e controle do localStorage
-        ├── charts.js         # Motor de geração de gráficos em SVG
-        └── app.js            # Lógica central, eventos e cálculo de KPIs
+- **gerenciadornetwork/**
+  - **package.json** (Configurações do projeto e scripts de dev)
+  - **README.md** (Documentação oficial)
+  - **public/** (Build final publicado no Firebase)
+    - **index.html** (Estrutura e layout da dashboard)
+    - **css/styles.css** (Estilização corporativa)
+    - **js/storage.js** (Módulo CRUD e controle do localStorage)
+    - **js/charts.js** (Motor de geração de gráficos em SVG)
+    - **js/app.js** (Lógica central, eventos e cálculo de KPIs)
+
+---
+
+## 🎨 Paleta de Cores (Tema Claro ITAM)
+
+| Elemento | Finalidade | Hex Code |
+| :--- | :--- | :--- |
+| **Fundo Geral** | Background leve da aplicação | `#F4F8FC` |
+| **Sidebar** | Painel lateral de navegação | `#EAF2F9` |
+| **Cards & Superfícies** | Fundo de componentes e tabelas | `#FFFFFF` |
+| **Azul Principal** | Botões primários e ações de relevância | `#3B82C4` |
+| **Texto Principal** | Alta legibilidade para dados | `#1E293B` |
+| **Status Operacional** | Badge verde de operabilidade | `#16A34A` |
+| **Status Atenção** | Badge amarelo de alerta/manutenção | `#D97706` |
+| **Status Emergência** | Badge vermelho de inatividade/atraso | `#DC2626` |
+
+---
+
+## 💻 Como Rodar Localmente
+
+1. **Clone o repositório:**
+   `git clone https://github.com/emilyangelo/Network-Asset-Manager.git`
+
+2. **Acesse a pasta do projeto:**
+   `cd Network-Asset-Manager`
+
+3. **Instale as dependências e rode o servidor local:**
+   `npm install`  
+   `npm run dev`
+
+4. **Abra no navegador:**
+   `http://localhost:3000`
+
+---
+
+## 👤 Autora
+
+**Emily Almeida Angelo**  
+*Estudante de ADS (UNG) | Foco em Infraestrutura, Redes, Suporte & Cloud*  
+
+- 🌐 **Aplicação Live:** [gerenciadornetworks.web.app](https://gerenciadornetworks.web.app/)
+- 💻 **GitHub:** [@emilyangelo](https://github.com/emilyangelo)
+- 💼 **LinkedIn:** [emilyangeloo](https://www.linkedin.com/in/emilyangeloo/)
