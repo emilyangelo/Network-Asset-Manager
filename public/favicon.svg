@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <defs>
+    <linearGradient id="nm-bg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="55%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="nm-shine" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="10" fill="url(#nm-bg)"/>
+  <rect x="0.75" y="0.75" width="38.5" height="38.5" rx="9.25" stroke="url(#nm-shine)" stroke-width="1.5"/>
+  <!-- Outer subtle mesh -->
+  <path d="M20 9.5L10.5 18.5L20 30.5L29.5 18.5L20 9.5Z" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Core connections -->
+  <line x1="20" y1="9.5" x2="20" y2="19.5" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="2" stroke-linecap="round"/>
+  <line x1="10.5" y1="18.5" x2="20" y2="19.5" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="2" stroke-linecap="round"/>
+  <line x1="29.5" y1="18.5" x2="20" y2="19.5" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="2" stroke-linecap="round"/>
+  <line x1="20" y1="30.5" x2="20" y2="19.5" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="2" stroke-linecap="round"/>
+  <!-- Peripheral nodes -->
+  <circle cx="20" cy="9.5" r="2.75" fill="#FFFFFF"/>
+  <circle cx="10.5" cy="18.5" r="2.5" fill="#FFFFFF"/>
+  <circle cx="29.5" cy="18.5" r="2.5" fill="#FFFFFF"/>
+  <circle cx="20" cy="30.5" r="2.75" fill="#FFFFFF"/>
+  <!-- Core hub -->
+  <circle cx="20" cy="19.5" r="4.25" fill="#FFFFFF"/>
+  <circle cx="20" cy="19.5" r="1.9" fill="#2563EB"/>
+</svg>

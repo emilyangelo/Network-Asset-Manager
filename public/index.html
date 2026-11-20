@@ -3,300 +3,780 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Network Asset Manager — Gerenciamento de Ativos e Infraestrutura de Rede</title>
+  <title>Network Asset Manager — Portal ITAM & Gestão de Redes</title>
   <meta name="description" content="Sistema corporativo de gerenciamento de ativos de rede, monitoramento de manutenções preventivas, preditivas e corretivas.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('nam_theme');
+        if (savedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/styles.css?v=4.0">
 </head>
 <body>
 
   <div class="app-layout">
-    
-    <!-- Sidebar Corporativa -->
-    <aside class="sidebar">
-      <div class="sidebar-brand">
-        <div class="brand-badge">NOC / ITAM</div>
-        <div class="brand-titles">
-          <h1>Network Manager</h1>
-          <p>Gestão de Infraestrutura</p>
-        </div>
-      </div>
-      
-      <nav class="sidebar-nav">
-        <span class="nav-section-label">Módulos do Sistema</span>
-        <button class="sidebar-nav-item active" id="nav-item-dashboard" type="button">
-          📊 Painel Geral (NOC)
-        </button>
-        <button class="sidebar-nav-item" id="nav-item-assets" type="button">
-          🖥️ Catálogo de Ativos
-        </button>
-        <button class="sidebar-nav-item" id="nav-item-maint" type="button">
-          🛠️ Registro de Ocorrências
-        </button>
-      </nav>
 
-      <div class="sidebar-footer">
-        <button id="btn-reset-data" class="btn btn-secondary btn-sm" style="width: 100%;" title="Resetar para dados de demonstração">
-          ↺ Resetar Dados Demo
-        </button>
-      </div>
-    </aside>
+    <!-- Barra Superior Fixa (Top Navbar) -->
+    <header class="top-navbar">
+      <div class="top-navbar-inner">
 
-    <!-- Conteúdo Principal -->
-    <main class="main-content">
-      
-      <!-- Topbar / Header -->
-      <header class="topbar">
-        <div class="page-title">
-          <h2>Console de Gerenciamento de Ativos de Rede</h2>
-          <p>Visão consolidada de inventário, disponibilidade e custos operacionais</p>
+        <!-- Esquerda: Logotipo + Título -->
+        <div class="navbar-brand">
+          <div class="brand-logo" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 40 40" fill="none">
+              <defs>
+                <linearGradient id="nav-nm-bg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#3B82F6"/>
+                  <stop offset="55%" stop-color="#2563EB"/>
+                  <stop offset="100%" stop-color="#4F46E5"/>
+                </linearGradient>
+                <linearGradient id="nav-nm-shine" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+                  <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <rect width="40" height="40" rx="10" fill="url(#nav-nm-bg)"/>
+              <rect x="0.75" y="0.75" width="38.5" height="38.5" rx="9.25" stroke="url(#nav-nm-shine)" stroke-width="1.5"/>
+              <path d="M20 9.5L10.5 18.5L20 30.5L29.5 18.5L20 9.5Z" stroke="#FFFFFF" stroke-opacity="0.38" stroke-width="1.5" stroke-linejoin="round"/>
+              <line x1="20" y1="9.5" x2="20" y2="19.5" stroke="#FFFFFF" stroke-opacity="0.92" stroke-width="2" stroke-linecap="round"/>
+              <line x1="10.5" y1="18.5" x2="20" y2="19.5" stroke="#FFFFFF" stroke-opacity="0.92" stroke-width="2" stroke-linecap="round"/>
+              <line x1="29.5" y1="18.5" x2="20" y2="19.5" stroke="#FFFFFF" stroke-opacity="0.92" stroke-width="2" stroke-linecap="round"/>
+              <line x1="20" y1="30.5" x2="20" y2="19.5" stroke="#FFFFFF" stroke-opacity="0.92" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="20" cy="9.5" r="2.75" fill="#FFFFFF"/>
+              <circle cx="10.5" cy="18.5" r="2.5" fill="#FFFFFF"/>
+              <circle cx="29.5" cy="18.5" r="2.5" fill="#FFFFFF"/>
+              <circle cx="20" cy="30.5" r="2.75" fill="#FFFFFF"/>
+              <circle cx="20" cy="19.5" r="4.25" fill="#FFFFFF"/>
+              <circle cx="20" cy="19.5" r="1.9" fill="#2563EB"/>
+            </svg>
+          </div>
+          <div class="brand-titles">
+            <h1>Network Manager</h1>
+            <p>Gestão de Infraestrutura</p>
+          </div>
         </div>
+
+        <!-- Centro: Abas de Navegação Horizontal (Views Independentes) -->
+        <nav class="navbar-nav" aria-label="Navegação principal">
+          <button class="nav-tab-item active" id="nav-item-dashboard" type="button" data-view="dashboard">
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="9" rx="1.5"/>
+              <rect x="14" y="3" width="7" height="5" rx="1.5"/>
+              <rect x="14" y="12" width="7" height="9" rx="1.5"/>
+              <rect x="3" y="16" width="7" height="5" rx="1.5"/>
+            </svg>
+            <span>Painel Geral (NOC)</span>
+          </button>
+          <button class="nav-tab-item" id="nav-item-assets" type="button" data-view="assets">
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="7" rx="2"/>
+              <rect x="2" y="14" width="20" height="7" rx="2"/>
+              <line x1="6" y1="6.5" x2="6.01" y2="6.5" stroke-width="2.4"/>
+              <line x1="6" y1="17.5" x2="6.01" y2="17.5" stroke-width="2.4"/>
+              <line x1="10" y1="6.5" x2="18" y2="6.5"/>
+              <line x1="10" y1="17.5" x2="18" y2="17.5"/>
+            </svg>
+            <span>Catálogo de Ativos</span>
+            <span class="nav-tab-count" id="nav-asset-count">0</span>
+          </button>
+          <button class="nav-tab-item" id="nav-item-maint" type="button" data-view="maintenances">
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+            <span>Registro de Ocorrências</span>
+            <span class="nav-tab-count" id="nav-maint-count">0</span>
+          </button>
+        </nav>
+
+        <!-- Direita: Alternância de Tema + Ações Rápidas -->
         <div class="topbar-actions">
-          <button id="btn-add-asset" class="btn btn-primary" type="button">
-            + Novo Ativo
+          <button id="btn-theme-toggle" class="btn-theme-toggle" type="button" aria-label="Alternar tema claro/escuro" aria-pressed="false" title="Alternar para modo escuro">
+            <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2"/>
+              <path d="M12 20v2"/>
+              <path d="m4.93 4.93 1.41 1.41"/>
+              <path d="m17.66 17.66 1.41 1.41"/>
+              <path d="M2 12h2"/>
+              <path d="M20 12h2"/>
+              <path d="m6.34 17.66-1.41 1.41"/>
+              <path d="m19.07 4.93-1.41 1.41"/>
+            </svg>
           </button>
-          <button id="btn-add-maint" class="btn btn-cyan" type="button">
-            + Registrar Manutenção
+          <button id="btn-add-asset" class="btn btn-primary btn-nav-action" type="button">
+            <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>Novo Ativo</span>
+          </button>
+          <button id="btn-add-maint" class="btn btn-cyan btn-nav-action" type="button">
+            <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+            <span>Registrar Manutenção</span>
           </button>
         </div>
-      </header>
 
-      <!-- Banner Alerta de Maior Gasto -->
-      <div id="major-expense-banner" class="major-expense-banner">
-        <div class="major-expense-info">
-          <div class="expense-badge-icon">ANÁLISE</div>
-          <div class="major-expense-text">
-            <h3>Identificação Automática do Maior Gasto</h3>
-            <p id="major-expense-desc">Carregando dados de custos de manutenção...</p>
-          </div>
-        </div>
-        <div class="major-expense-val" id="major-expense-value">R$ 0,00</div>
       </div>
+    </header>
 
-      <!-- Cards de Indicadores KPIs -->
-      <section class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Total de Ativos</span>
-            <span class="kpi-icon">TOTAL</span>
-          </div>
-          <div class="kpi-value" id="kpi-total-assets">0</div>
-          <div class="kpi-subtext">Inventário cadastrado</div>
-        </div>
+    <!-- Conteúdo Principal Centralizado (100% largura até 1440px) -->
+    <main class="main-content">
+      <div class="content-body">
 
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Ativos Operacionais</span>
-            <span class="kpi-icon">OK</span>
-          </div>
-          <div class="kpi-value" style="color: var(--status-active);" id="kpi-active-assets">0</div>
-          <div class="kpi-subtext">Status Operacional</div>
-        </div>
+        <!-- ================================================================
+             ABA 1: PAINEL GERAL (NOC)
+             ================================================================ -->
+        <div id="view-section-dashboard" class="app-view active">
 
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Em Manutenção</span>
-            <span class="kpi-icon">WARN</span>
-          </div>
-          <div class="kpi-value" style="color: var(--status-maint);" id="kpi-maint-assets">0</div>
-          <div class="kpi-subtext">Status Manutenção</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Ativos Inativos</span>
-            <span class="kpi-icon">CRIT</span>
-          </div>
-          <div class="kpi-value" style="color: var(--status-inactive);" id="kpi-inactive-assets">0</div>
-          <div class="kpi-subtext">Status Inativo</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Ocorrências</span>
-            <span class="kpi-icon">LOG</span>
-          </div>
-          <div class="kpi-value" id="kpi-total-occurrences">0</div>
-          <div class="kpi-subtext">Manutenções registradas</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Manut. Preventiva</span>
-            <span class="kpi-icon">PREV</span>
-          </div>
-          <div class="kpi-value" id="kpi-cost-preventive">R$ 0,00</div>
-          <div class="kpi-subtext">Investimento preventivo</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Manut. Preditiva</span>
-            <span class="kpi-icon">PRED</span>
-          </div>
-          <div class="kpi-value" id="kpi-cost-predictive">R$ 0,00</div>
-          <div class="kpi-subtext">Investimento analítico</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Manut. Corretiva</span>
-            <span class="kpi-icon">CORR</span>
-          </div>
-          <div class="kpi-value" id="kpi-cost-corrective">R$ 0,00</div>
-          <div class="kpi-subtext">Gasto em reparações</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Custo Total</span>
-            <span class="kpi-icon">CUSTO</span>
-          </div>
-          <div class="kpi-value" style="color: var(--blue-selection);" id="kpi-total-cost">R$ 0,00</div>
-          <div class="kpi-subtext">Acumulado global</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-header">
-            <span class="kpi-title">Indisponibilidade</span>
-            <span class="kpi-icon">TEMPO</span>
-          </div>
-          <div class="kpi-value" id="kpi-total-downtime">0h</div>
-          <div class="kpi-subtext">Horas fora de operação</div>
-        </div>
-      </section>
-
-      <!-- Seção de Gráficos do Dashboard -->
-      <section class="charts-grid">
-        <div class="chart-card">
-          <h2 class="chart-title">Distribuição de Ativos por Tipo</h2>
-          <div id="chart-assets-by-type" class="chart-container"></div>
-        </div>
-
-        <div class="chart-card">
-          <h2 class="chart-title">Equipamentos por Status</h2>
-          <div id="chart-assets-by-status" class="chart-container"></div>
-        </div>
-
-        <div class="chart-card">
-          <h2 class="chart-title">Gastos por Tipo de Manutenção (R$)</h2>
-          <div id="chart-costs-by-type" class="chart-container"></div>
-        </div>
-
-        <div class="chart-card">
-          <h2 class="chart-title">Ocorrências por Equipamento</h2>
-          <div id="chart-occurrences-by-asset" class="chart-container"></div>
-        </div>
-      </section>
-
-      <!-- Barra de Filtros e Busca -->
-      <section class="controls-section">
-        <div class="filters-grid">
-          <div class="form-group">
-            <label for="search-input">Busca Rápida</label>
-            <input type="text" id="search-input" class="form-control" placeholder="Buscar por Nome, IP, MAC ou N/S...">
+          <!-- Cabeçalho da Página + Status Local + Reset Demo -->
+          <div class="page-header-bar">
+            <div class="page-title">
+              <h2>Console de Gerenciamento de Ativos de Rede</h2>
+              <p>Visão consolidada de inventário, disponibilidade e custos operacionais</p>
+            </div>
+            <div class="page-header-meta">
+              <div class="system-status-pill" title="Dados persistidos localmente no navegador">
+                <span class="status-dot-pulse" aria-hidden="true"></span>
+                <span>Armazenamento Local Ativo</span>
+              </div>
+              <button id="btn-reset-data" class="btn-reset-demo" type="button" title="Resetar para dados de demonstração">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                </svg>
+                <span>Resetar Dados Demo</span>
+              </button>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="filter-type">Tipo de Equipamento</label>
-            <select id="filter-type" class="form-control">
-              <option value="">Todos os Tipos</option>
-              <option value="Switch">Switch</option>
-              <option value="Roteador">Roteador</option>
-              <option value="Firewall">Firewall</option>
-              <option value="Servidor">Servidor</option>
-              <option value="Access Point">Access Point</option>
-              <option value="Outro">Outro</option>
-            </select>
+          <!-- Banner Alerta de Maior Gasto -->
+          <div id="major-expense-banner" class="major-expense-banner">
+            <div class="major-expense-info">
+              <div class="expense-badge-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 3v18h18"/>
+                  <path d="m19 9-5 5-4-4-3 3"/>
+                </svg>
+              </div>
+              <div class="major-expense-text">
+                <div class="major-expense-label-row">
+                  <h3>Identificação Automática do Maior Gasto</h3>
+                  <span class="expense-tag">Análise Inteligente</span>
+                </div>
+                <p id="major-expense-desc">Carregando dados de custos de manutenção...</p>
+              </div>
+            </div>
+            <div class="major-expense-val-box">
+              <span class="major-expense-val-caption">Maior impacto acumulado</span>
+              <div class="major-expense-val" id="major-expense-value">R$ 0,00</div>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="filter-vendor">Fabricante</label>
-            <select id="filter-vendor" class="form-control">
-              <option value="">Todos os Fabricantes</option>
-            </select>
-          </div>
+          <!-- Cards de Indicadores KPIs (10 cards) -->
+          <section class="kpi-grid" aria-label="Indicadores chave de desempenho">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Total de Ativos</span>
+                <span class="kpi-icon kpi-icon-blue" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="7" rx="2"/>
+                    <rect x="2" y="14" width="20" height="7" rx="2"/>
+                    <line x1="6" y1="6.5" x2="6.01" y2="6.5" stroke-width="2.5"/>
+                    <line x1="6" y1="17.5" x2="6.01" y2="17.5" stroke-width="2.5"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" id="kpi-total-assets">0</div>
+              <div class="kpi-subtext">Inventário cadastrado</div>
+            </div>
 
-          <div class="form-group">
-            <label for="filter-status">Status do Ativo</label>
-            <select id="filter-status" class="form-control">
-              <option value="">Todos os Status</option>
-              <option value="ativo">Ativo</option>
-              <option value="manutencao">Em Manutenção</option>
-              <option value="inativo">Inativo</option>
-            </select>
-          </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Ativos Operacionais</span>
+                <span class="kpi-icon kpi-icon-emerald" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" style="color: var(--status-active);" id="kpi-active-assets">0</div>
+              <div class="kpi-subtext">Status Operacional</div>
+            </div>
 
-          <div class="form-group">
-            <label for="filter-maint-status">Revisão Preventiva</label>
-            <select id="filter-maint-status" class="form-control">
-              <option value="">Todas as Revisões</option>
-              <option value="ok">Em dia</option>
-              <option value="warning">Próxima (≤ 15 dias)</option>
-              <option value="overdue">Atrasada</option>
-            </select>
-          </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Em Manutenção</span>
+                <span class="kpi-icon kpi-icon-amber" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" style="color: var(--status-maint);" id="kpi-maint-assets">0</div>
+              <div class="kpi-subtext">Status Manutenção</div>
+            </div>
 
-          <div class="form-group" style="align-self: flex-end;">
-            <button id="btn-clear-filters" class="btn btn-secondary" style="width: 100%;" type="button">Limpar Filtros</button>
-          </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Ativos Inativos</span>
+                <span class="kpi-icon kpi-icon-rose" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="15" y1="9" x2="9" y2="15"/>
+                    <line x1="9" y1="9" x2="15" y2="15"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" style="color: var(--status-inactive);" id="kpi-inactive-assets">0</div>
+              <div class="kpi-subtext">Status Inativo</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Ocorrências</span>
+                <span class="kpi-icon kpi-icon-indigo" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                    <rect x="8" y="2" width="8" height="4" rx="1"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                    <line x1="8" y1="16" x2="13" y2="16"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" id="kpi-total-occurrences">0</div>
+              <div class="kpi-subtext">Manutenções registradas</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Manut. Preventiva</span>
+                <span class="kpi-icon kpi-icon-emerald" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" id="kpi-cost-preventive">R$ 0,00</div>
+              <div class="kpi-subtext">Investimento preventivo</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Manut. Preditiva</span>
+                <span class="kpi-icon kpi-icon-cyan" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" id="kpi-cost-predictive">R$ 0,00</div>
+              <div class="kpi-subtext">Investimento analítico</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Manut. Corretiva</span>
+                <span class="kpi-icon kpi-icon-rose" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" id="kpi-cost-corrective">R$ 0,00</div>
+              <div class="kpi-subtext">Gasto em reparações</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Custo Total</span>
+                <span class="kpi-icon kpi-icon-blue" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="2" x2="12" y2="22"/>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" style="color: var(--blue-selection);" id="kpi-total-cost">R$ 0,00</div>
+              <div class="kpi-subtext">Acumulado global</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Indisponibilidade</span>
+                <span class="kpi-icon kpi-icon-orange" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="kpi-value" id="kpi-total-downtime">0h</div>
+              <div class="kpi-subtext">Horas fora de operação</div>
+            </div>
+          </section>
+
+          <!-- Seção de Gráficos Interativos do Dashboard -->
+          <section class="charts-grid" aria-label="Gráficos analíticos">
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <h2 class="chart-title">
+                  <span class="chart-title-icon chart-icon-blue" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+                      <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                    </svg>
+                  </span>
+                  <span>Distribuição de Ativos por Tipo</span>
+                </h2>
+                <span class="chart-hint">Passe o mouse para detalhes</span>
+              </div>
+              <div id="chart-assets-by-type" class="chart-container"></div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <h2 class="chart-title">
+                  <span class="chart-title-icon chart-icon-emerald" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                  </span>
+                  <span>Equipamentos por Status</span>
+                </h2>
+                <span class="chart-hint">Saúde operacional</span>
+              </div>
+              <div id="chart-assets-by-status" class="chart-container"></div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <h2 class="chart-title">
+                  <span class="chart-title-icon chart-icon-amber" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="18" y1="20" x2="18" y2="10"/>
+                      <line x1="12" y1="20" x2="12" y2="4"/>
+                      <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                  </span>
+                  <span>Gastos por Tipo de Manutenção (R$)</span>
+                </h2>
+                <span class="chart-hint">Comparativo financeiro</span>
+              </div>
+              <div id="chart-costs-by-type" class="chart-container"></div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <h2 class="chart-title">
+                  <span class="chart-title-icon chart-icon-indigo" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="2" width="20" height="8" rx="2"/>
+                      <rect x="2" y="14" width="20" height="8" rx="2"/>
+                      <line x1="6" y1="6" x2="6.01" y2="6" stroke-width="2.5"/>
+                      <line x1="6" y1="18" x2="6.01" y2="18" stroke-width="2.5"/>
+                    </svg>
+                  </span>
+                  <span>Ocorrências por Equipamento</span>
+                </h2>
+                <span class="chart-hint">Top 5 ativos • Cor por status</span>
+              </div>
+              <div id="chart-occurrences-by-asset" class="chart-container"></div>
+            </div>
+          </section>
+
+          <!-- Painel Visual: Cronograma de Próximas Manutenções Preventivas (NOC) -->
+          <section class="schedule-card" aria-label="Cronograma de próximas manutenções preventivas">
+            <div class="schedule-header">
+              <div class="schedule-title-wrap">
+                <span class="chart-title-icon chart-icon-emerald" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                    <path d="m9 16 2 2 4-4"/>
+                  </svg>
+                </span>
+                <div>
+                  <h2 class="schedule-title">Cronograma de Próximas Manutenções Preventivas</h2>
+                  <p class="schedule-subtitle">Ordenado por urgência — atrasadas primeiro, seguidas pelo menor prazo restante</p>
+                </div>
+              </div>
+              <div class="schedule-filters" data-schedule-group="noc">
+                <button type="button" class="schedule-filter-btn active" data-schedule-filter="all">Todos <span class="sf-count" data-sf-count="all">0</span></button>
+                <button type="button" class="schedule-filter-btn" data-schedule-filter="overdue">Atrasadas <span class="sf-count sf-count-danger" data-sf-count="overdue">0</span></button>
+                <button type="button" class="schedule-filter-btn" data-schedule-filter="upcoming30">Próximos 30 dias <span class="sf-count sf-count-warn" data-sf-count="upcoming30">0</span></button>
+                <button type="button" class="schedule-filter-btn" data-schedule-filter="ok">Em dia <span class="sf-count sf-count-ok" data-sf-count="ok">0</span></button>
+              </div>
+            </div>
+            <div id="preventive-schedule-noc" class="schedule-list"></div>
+          </section>
+
         </div>
-      </section>
 
-      <!-- Tabela Principal com Abas -->
-      <section class="table-section">
-        <div class="section-header">
-          <div class="view-tabs">
-            <button id="tab-assets" class="tab-btn active" type="button">Catálogo de Ativos (<span id="asset-count-badge">0</span>)</button>
-            <button id="tab-maintenances" class="tab-btn" type="button">Histórico de Manutenções (<span id="maint-count-badge">0</span>)</button>
+        <!-- ================================================================
+             ABA 2: CATÁLOGO DE ATIVOS
+             ================================================================ -->
+        <div id="view-section-assets" class="app-view">
+
+          <div class="page-header-bar">
+            <div class="page-title">
+              <h2>Catálogo de Ativos de Rede</h2>
+              <p>Inventário completo de equipamentos, endereçamento, localização e status de revisão</p>
+            </div>
+            <div class="page-header-meta">
+              <span class="view-badge-info">
+                <strong id="asset-count-badge">0</strong> ativos cadastrados
+              </span>
+            </div>
           </div>
+
+          <!-- Cards de Resumo Rápido de Inventário -->
+          <section class="summary-grid" aria-label="Resumo rápido do inventário">
+            <div class="summary-card">
+              <div class="summary-card-icon kpi-icon-blue" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="7" rx="2"/>
+                  <rect x="2" y="14" width="20" height="7" rx="2"/>
+                  <line x1="6" y1="6.5" x2="6.01" y2="6.5" stroke-width="2.5"/>
+                  <line x1="6" y1="17.5" x2="6.01" y2="17.5" stroke-width="2.5"/>
+                </svg>
+              </div>
+              <div class="summary-card-body">
+                <span class="summary-label">Total no Inventário</span>
+                <strong class="summary-value" id="assets-summary-total">0</strong>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <div class="summary-card-icon kpi-icon-emerald" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+              <div class="summary-card-body">
+                <span class="summary-label">Operacionais</span>
+                <strong class="summary-value" style="color: var(--status-active);" id="assets-summary-active">0</strong>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <div class="summary-card-icon kpi-icon-amber" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/>
+                </svg>
+              </div>
+              <div class="summary-card-body">
+                <span class="summary-label">Em Manutenção</span>
+                <strong class="summary-value" style="color: var(--status-maint);" id="assets-summary-maint">0</strong>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <div class="summary-card-icon kpi-icon-rose" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5"/>
+                </svg>
+              </div>
+              <div class="summary-card-body">
+                <span class="summary-label">Preventivas Atrasadas</span>
+                <strong class="summary-value" style="color: var(--status-inactive);" id="assets-summary-overdue">0</strong>
+              </div>
+            </div>
+          </section>
+
+          <!-- Destaque Preventivo no Catálogo de Ativos -->
+          <section class="schedule-card schedule-card-compact" aria-label="Destaque de manutenções preventivas">
+            <div class="schedule-header">
+              <div class="schedule-title-wrap">
+                <span class="chart-title-icon chart-icon-amber" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                </span>
+                <div>
+                  <h2 class="schedule-title">Cronograma de Próximas Manutenções Preventivas</h2>
+                  <p class="schedule-subtitle">Acompanhe os prazos de revisão preventiva diretamente no catálogo</p>
+                </div>
+              </div>
+              <div class="schedule-filters" data-schedule-group="assets">
+                <button type="button" class="schedule-filter-btn active" data-schedule-filter="all">Todos <span class="sf-count" data-sf-count="all">0</span></button>
+                <button type="button" class="schedule-filter-btn" data-schedule-filter="overdue">Atrasadas <span class="sf-count sf-count-danger" data-sf-count="overdue">0</span></button>
+                <button type="button" class="schedule-filter-btn" data-schedule-filter="upcoming30">Próximos 30 dias <span class="sf-count sf-count-warn" data-sf-count="upcoming30">0</span></button>
+                <button type="button" class="schedule-filter-btn" data-schedule-filter="ok">Em dia <span class="sf-count sf-count-ok" data-sf-count="ok">0</span></button>
+              </div>
+            </div>
+            <div id="preventive-schedule-assets" class="schedule-list"></div>
+          </section>
+
+          <!-- Barra de Filtros Completa do Catálogo -->
+          <section class="controls-section" aria-label="Filtros do catálogo de ativos">
+            <div class="filters-grid">
+              <div class="form-group form-group-search">
+                <label for="search-input">Busca Rápida</label>
+                <div class="input-with-icon">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                  <input type="text" id="search-input" class="form-control" placeholder="Buscar por Nome, IP, MAC ou N/S...">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="filter-type">Tipo de Equipamento</label>
+                <select id="filter-type" class="form-control">
+                  <option value="">Todos os Tipos</option>
+                  <option value="Switch">Switch</option>
+                  <option value="Roteador">Roteador</option>
+                  <option value="Firewall">Firewall</option>
+                  <option value="Servidor">Servidor</option>
+                  <option value="Access Point">Access Point</option>
+                  <option value="Storage / NAS">Storage / NAS</option>
+                  <option value="Impressora / Multifuncional">Impressora / Multifuncional</option>
+                  <option value="Nobreak (UPS)">Nobreak (UPS)</option>
+                  <option value="Patch Panel">Patch Panel</option>
+                  <option value="Câmera IP / NVR">Câmera IP / NVR</option>
+                  <option value="Telefone IP (VoIP)">Telefone IP (VoIP)</option>
+                  <option value="Desktop / Notebook">Desktop / Notebook</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="filter-vendor">Fabricante</label>
+                <select id="filter-vendor" class="form-control">
+                  <option value="">Todos os Fabricantes</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="filter-status">Status do Ativo</label>
+                <select id="filter-status" class="form-control">
+                  <option value="">Todos os Status</option>
+                  <option value="ativo">Ativo</option>
+                  <option value="manutencao">Em Manutenção</option>
+                  <option value="inativo">Inativo</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="filter-maint-status">Revisão Preventiva</label>
+                <select id="filter-maint-status" class="form-control">
+                  <option value="">Todas as Revisões</option>
+                  <option value="ok">Em dia</option>
+                  <option value="warning">Próxima (≤ 15 dias)</option>
+                  <option value="overdue">Atrasada</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="align-self: flex-end;">
+                <button id="btn-clear-filters" class="btn btn-secondary" style="width: 100%;" type="button">Limpar Filtros</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tabela de Ativos Cadastrados -->
+          <section class="table-section">
+            <div class="section-header">
+              <div class="section-title-group">
+                <h3 class="table-section-title">Ativos Cadastrados</h3>
+                <span class="table-result-meta" id="assets-filtered-meta">Exibindo todos os equipamentos</span>
+              </div>
+              <button id="tab-assets" class="btn btn-secondary btn-sm" type="button" style="display: none;">Ativos</button>
+            </div>
+
+            <div id="view-assets-container" class="table-responsive">
+              <table class="data-table data-table-assets">
+                <thead>
+                  <tr>
+                    <th>Hostname / Nome</th>
+                    <th>Tipo</th>
+                    <th>Fabricante / Modelo</th>
+                    <th>Endereço IP / MAC</th>
+                    <th>Localização</th>
+                    <th>Status</th>
+                    <th>Próxima Preventiva</th>
+                    <th style="text-align: right;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="assets-table-body">
+                  <!-- Linhas geradas via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+
         </div>
 
-        <!-- Visão 1: Tabela de Ativos -->
-        <div id="view-assets-container" class="table-responsive">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Hostname / Nome</th>
-                <th>Tipo</th>
-                <th>Fabricante / Modelo</th>
-                <th>Endereço IP</th>
-                <th>Endereço MAC</th>
-                <th>Localização</th>
-                <th>Status</th>
-                <th>Próxima Preventiva</th>
-                <th style="text-align: right;">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="assets-table-body">
-              <!-- Linhas geradas via JavaScript -->
-            </tbody>
-          </table>
+        <!-- ================================================================
+             ABA 3: REGISTRO DE OCORRÊNCIAS (MANUTENÇÕES)
+             ================================================================ -->
+        <div id="view-section-maint" class="app-view">
+
+          <div class="page-header-bar">
+            <div class="page-title">
+              <h2>Registro de Ocorrências e Manutenções</h2>
+              <p>Histórico completo de intervenções preventivas, preditivas e corretivas com controle de custos e downtime</p>
+            </div>
+            <div class="page-header-meta">
+              <span class="view-badge-info">
+                <strong id="maint-count-badge">0</strong> registros no histórico
+              </span>
+            </div>
+          </div>
+
+          <!-- Cards de Resumo de Manutenções -->
+          <section class="summary-grid" aria-label="Totais de manutenção">
+            <div class="summary-card">
+              <div class="summary-card-icon kpi-icon-indigo" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                  <rect x="8" y="2" width="8" height="4" rx="1"/>
+                  <line x1="8" y1="12" x2="16" y2="12"/>
+                  <line x1="8" y1="16" x2="13" y2="16"/>
+                </svg>
+              </div>
+              <div class="summary-card-body">
+                <span class="summary-label">Total de Ocorrências</span>
+                <strong class="summary-value" id="maint-summary-total">0</strong>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <div class="summary-card-icon kpi-icon-blue" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="2" x2="12" y2="22"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+              <div class="summary-card-body">
+                <span class="summary-label">Custo Total Acumulado</span>
+                <strong class="summary-value" style="color: var(--blue-selection);" id="maint-summary-cost">R$ 0,00</strong>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <div class="summary-card-icon kpi-icon-rose" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+              </div>
+              <div class="summary-card-body">
+                <span class="summary-label">Gasto Corretivo</span>
+                <strong class="summary-value" style="color: var(--status-inactive);" id="maint-summary-corrective">R$ 0,00</strong>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <div class="summary-card-icon kpi-icon-orange" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div class="summary-card-body">
+                <span class="summary-label">Indisponibilidade Total</span>
+                <strong class="summary-value" id="maint-summary-downtime">0.0h</strong>
+              </div>
+            </div>
+          </section>
+
+          <!-- Barra de Filtros de Manutenção -->
+          <section class="controls-section" aria-label="Filtros de ocorrências de manutenção">
+            <div class="filters-grid filters-grid-maint">
+              <div class="form-group form-group-search">
+                <label for="maint-search-input">Pesquisar Ocorrência</label>
+                <div class="input-with-icon">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                  <input type="text" id="maint-search-input" class="form-control" placeholder="Buscar por equipamento ou descrição...">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="filter-maint-type">Tipo de Manutenção</label>
+                <select id="filter-maint-type" class="form-control">
+                  <option value="">Todos os Tipos</option>
+                  <option value="preventiva">Preventiva</option>
+                  <option value="preditiva">Preditiva</option>
+                  <option value="corretiva">Corretiva</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="filter-maint-asset">Equipamento (Ativo)</label>
+                <select id="filter-maint-asset" class="form-control">
+                  <option value="">Todos os Equipamentos</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="align-self: flex-end;">
+                <button id="btn-clear-maint-filters" class="btn btn-secondary" style="width: 100%;" type="button">Limpar Filtros</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tabela Completa do Histórico de Manutenções -->
+          <section class="table-section">
+            <div class="section-header">
+              <div class="section-title-group">
+                <h3 class="table-section-title">Histórico de Manutenções</h3>
+                <span class="table-result-meta" id="maint-filtered-meta">Exibindo todos os registros</span>
+              </div>
+              <button id="tab-maintenances" class="btn btn-secondary btn-sm" type="button" style="display: none;">Manutenções</button>
+            </div>
+
+            <div id="view-maintenances-container" class="table-responsive">
+              <table class="data-table data-table-maint">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Equipamento (Ativo)</th>
+                    <th>Tipo Manutenção</th>
+                    <th>Descrição</th>
+                    <th>Custo (R$)</th>
+                    <th>Indisponibilidade</th>
+                    <th style="text-align: right;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="maintenances-table-body">
+                  <!-- Linhas geradas via JavaScript -->
+                </tbody>
+                <tfoot id="maintenances-table-foot"></tfoot>
+              </table>
+            </div>
+          </section>
+
         </div>
 
-        <!-- Visão 2: Tabela de Manutenções -->
-        <div id="view-maintenances-container" class="table-responsive" style="display: none;">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Equipamento (Ativo)</th>
-                <th>Tipo Manutenção</th>
-                <th>Descrição</th>
-                <th>Custo (R$)</th>
-                <th>Indisponibilidade</th>
-                <th style="text-align: right;">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="maintenances-table-body">
-              <!-- Linhas geradas via JavaScript -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-
+      </div>
     </main>
 
   </div>
@@ -306,7 +786,7 @@
     <div class="modal-box">
       <div class="modal-header">
         <h2 id="modal-asset-title">Cadastrar Novo Ativo de Rede</h2>
-        <button id="btn-close-asset-modal" class="btn-close" type="button">&times;</button>
+        <button id="btn-close-asset-modal" class="btn-close" type="button" aria-label="Fechar modal">&times;</button>
       </div>
       <form id="form-asset" action="javascript:void(0);">
         <input type="hidden" id="asset-id">
@@ -323,6 +803,13 @@
               <option value="Firewall">Firewall</option>
               <option value="Servidor">Servidor</option>
               <option value="Access Point">Access Point</option>
+              <option value="Storage / NAS">Storage / NAS</option>
+              <option value="Impressora / Multifuncional">Impressora / Multifuncional</option>
+              <option value="Nobreak (UPS)">Nobreak (UPS)</option>
+              <option value="Patch Panel">Patch Panel</option>
+              <option value="Câmera IP / NVR">Câmera IP / NVR</option>
+              <option value="Telefone IP (VoIP)">Telefone IP (VoIP)</option>
+              <option value="Desktop / Notebook">Desktop / Notebook</option>
               <option value="Outro">Outro</option>
             </select>
           </div>
@@ -339,8 +826,8 @@
             <input type="text" id="asset-sn" class="form-control" placeholder="Ex: SN-98231-X">
           </div>
           <div class="form-group">
-            <label for="asset-ip">Endereço IP *</label>
-            <input type="text" id="asset-ip" class="form-control" placeholder="Ex: 192.168.1.1" required>
+            <label for="asset-ip">Endereço IP</label>
+            <input type="text" id="asset-ip" class="form-control" placeholder="Ex: 192.168.1.1 (Opcional)">
           </div>
           <div class="form-group">
             <label for="asset-mac">Endereço MAC</label>
@@ -388,7 +875,7 @@
     <div class="modal-box">
       <div class="modal-header">
         <h2>Registrar Ocorrência de Manutenção</h2>
-        <button id="btn-close-maint-modal" class="btn-close" type="button">&times;</button>
+        <button id="btn-close-maint-modal" class="btn-close" type="button" aria-label="Fechar modal">&times;</button>
       </div>
       <form id="form-maint" action="javascript:void(0);">
         <div class="form-grid">
@@ -432,9 +919,9 @@
   </div>
 
   <!-- Scripts JS Client-Side -->
-  <script src="js/storage.js"></script>
-  <script src="js/charts.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/storage.js?v=4.0"></script>
+  <script src="js/charts.js?v=4.0"></script>
+  <script src="js/app.js?v=4.0"></script>
 
 </body>
 </html>
